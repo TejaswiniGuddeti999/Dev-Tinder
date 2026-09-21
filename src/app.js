@@ -31,8 +31,8 @@ app.use("/user", [(req,res,next) => {
     next();
     res.send("Response 5")
 }
+);
 
-f);
 
 app.listen(7777, () => {
     console.log("Server is running on port 7777");
