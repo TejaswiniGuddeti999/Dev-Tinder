@@ -23,6 +23,25 @@ app.post("/signup" ,async (req,res) => {
     
 });
 
+// Feed API - Get /feed - get all users from db
+app.get("/user", async (req,res) => {
+    const userfname = req.body.firstName;
+
+    try {
+        const users = await User.findOne({ firstName : userfname});
+        if(users.length === 0) {
+            res.status(404).send("User not found");
+        }
+        else {
+            res.send(users);
+        }
+
+    } catch (err) {
+        res.status(400).send("Something went wrong");
+    }
+});
+
+
 connectDB()
     .then(() => {
         console.log("Database connection established successfully");
