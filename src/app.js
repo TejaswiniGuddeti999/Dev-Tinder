@@ -13,7 +13,11 @@ app.post("/signup" ,async (req,res) => {
     
     // creating a new instance of the user model
     const user = new User(req.body);
+    
     try {
+        if (user?.skills.length > 10){
+        throw new Error ("skills cannot be more than 10 ");
+        }
         await user.save();
         res.send("User added successfully")
     }
@@ -56,9 +60,23 @@ app.delete("/del", async(req, res) => {
 });
 
 // Update data of users
-app.patch("/upd", async (req, res) => {
-    const userId = req.body.userId;
+app.patch("/upd/:userId", async (req, res) => {
+    const userId = req.params?.userId;
     const data = req.body;
+
+    const ALLOWED_UPDATES = [
+        "photoUrl", "about", "gender", "age", "skills"
+    ]
+
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+        ALLOWED_UPDATES.includes(k)
+    );
+    if (!isUpdateAllowed) {
+        return res.status(400).send("Update not allowed");
+    };
+    if (data.skills && data?.skills.length > 10){
+        throw new Error ("skills cannot be more than 10 ");
+    }
     try {
         const user = await User.findByIdAndUpdate(userId , data, {
             returnDocument: "after",
