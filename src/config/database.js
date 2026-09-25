@@ -7,7 +7,7 @@ console.log("Connecting to:", uri);
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-    await mongoose.connect(uri);
+    await mongoose.connect(uri); 
 };
 
 

@@ -28,7 +28,7 @@ app.get("/user", async (req,res) => {
     const userfname = req.body.firstName;
 
     try {
-        const users = await User.findOne({ firstName : userfname});
+        const users = await User.find({ firstName : userfname});
         if(users.length === 0) {
             res.status(404).send("User not found");
         }
@@ -36,11 +36,40 @@ app.get("/user", async (req,res) => {
             res.send(users);
         }
 
+
     } catch (err) {
         res.status(400).send("Something went wrong");
     }
 });
 
+// delete api
+app.delete("/del", async(req, res) => {
+    const userId = req.body.userId;
+    try {
+        const user = await User.findByIdAndDelete(userId);
+
+        res.send("User deleted successfully")
+    } 
+    catch (err) {
+        res.status(400).send("something went wrong");
+    }
+});
+
+// Update data of users
+app.patch("/upd", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(userId , data, {
+            returnDocument: "after",
+            runValidators : true,
+        });
+        console.log(user);
+        res.send("User updated successfully");
+    } catch (err) { 
+        res.status(400).send("Something went wrong" + err.message);
+    }
+}); 
 
 connectDB()
     .then(() => {
