@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required:true,
+        trim: true,
         min:3,
         max:50
     },
@@ -15,6 +16,7 @@ const userSchema = new mongoose.Schema({
     emailId: {
         type: String,
         required:true,
+        trim: true,
         unique:true,
         lowercase: true,
         trim: true,
