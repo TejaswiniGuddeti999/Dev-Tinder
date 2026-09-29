@@ -41,7 +41,7 @@ authRouter.post("/login", async (req,res) => {
         const user = await User.findOne({ emailId : emailId});
 
         if (!user) {
-            throw new Error("Invalid credentials!!")
+            throw new Error("User not found!")
         }
         const isPasswordValid = await user.validatePassword(password);
 
@@ -63,5 +63,16 @@ authRouter.post("/login", async (req,res) => {
     
     }
 });
+
+
+authRouter.post("/logout", async(req,res) => {
+   res.cookie("token", "" , {
+    expires: new Date(0),
+   });
+   res.send("logout successful");
+});
+
+
+
 
 module.exports = authRouter;

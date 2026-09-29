@@ -6,13 +6,15 @@
 
 - GET /profile/view
 - PATCH /profile/edit
-- PATCH / profile/password
+- PATCH / profile/password //forgot password
+
 
 - POST /request/send/interested/:userId
 - POST /request/review/ignored/:userId
 
 - POST /request/review/accepted/ :requestID
 - POST /request/review/rejected/ :requestId
+-
 
 - GET /connections
 - GET /requests/received

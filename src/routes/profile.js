@@ -1,11 +1,12 @@
 const express = require("express")
 const User = require("../models/user");
 const {userAuth} = require("../middlewares/auth");
+const {validateEditProfileData} = require("../utils/validation")
 
 profileRouter = express.Router();
 
 
-profileRouter.get("/profile", userAuth,  async (req, res) => {
+profileRouter.get("/profile/view", userAuth,  async (req, res) => {
     try {
         const user = req.user;
         res.send(user);
@@ -15,6 +16,30 @@ profileRouter.get("/profile", userAuth,  async (req, res) => {
         res.status(400).send("ERROR:" +err.message);
     }
 });
+
+profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+    try {
+        if (!validateEditProfileData(req)) {
+            throw new Error("Invalid edit request")
+            // return res.status(400).sent("")
+        }
+        const loggedInUser = req.user;
+        
+
+        Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
+
+        await loggedInUser.save();
+
+        res.send(loggedInUser.firstName + " your profile updated successfully!")
+        }
+    catch (err) { 
+        res.status(400).send("ERROR " + err.message);
+    }  
+
+});
+
+
+
 
 
 module.exports = profileRouter;
