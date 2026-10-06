@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required:true,
         trim: true,
-        min:3,
-        max:50
+        minLength:3,
+        maxLength:50,
+        
     },
     lastName: {
         type: String
@@ -82,7 +83,6 @@ const userSchema = new mongoose.Schema({
 }
 );
 
-User.find({ firstName: "Akshay", lastName: "Saini"});
 
 userSchema.methods.getJWT = async function () {
     const user = this;
